@@ -3,8 +3,8 @@ import numpy as np
 
 class Layer:
 
-    def __init__(self, num,input=[1,2,3,4,5]):
-        self.layer = [Perceptron(input) for _ in range(num)]
+    def __init__(self, num,input=[1,2,3,4,5],activation="linear"):
+        self.layer = [Perceptron(input,activation=activation) for _ in range(num)]
 
     def layer_calculate(self):
         return [i.value for i in self.layer]

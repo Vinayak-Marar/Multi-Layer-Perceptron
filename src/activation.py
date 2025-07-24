@@ -1,5 +1,16 @@
 import numpy as np
 
+class Linear:
+    def __init__(self,input):
+        self.n = input
+        self.value = self.calculate()
+        self.d = self.derivative()
+
+    def calculate(self):
+        return self.n
+    
+    def derivative(self):
+        return 1
 
 class Sigmoid:
 

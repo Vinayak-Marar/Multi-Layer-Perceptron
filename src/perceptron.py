@@ -1,6 +1,5 @@
 import numpy as np
-from activation import Sigmoid,ReLu,LeakyReLu
-
+from activation import *
 
 class  Perceptron:
 
@@ -23,6 +22,8 @@ class  Perceptron:
             activate = ReLu(self.linear_value)
         elif self.activation == "leaky-relu":
             activate = LeakyReLu(self.linear_value)
+        elif self.activation == "linear":
+            activate = Linear(self.linear_value)
 
         return activate.calculate(), activate.derivative()
 
