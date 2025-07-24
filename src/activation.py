@@ -51,12 +51,12 @@ class LeakyReLu:
         return 0.1*self.n if self.n <= 0 else self.n
 
     def derivative(self):
-        return 0.1 if self.n <= 0 else 1
+        return  0.1 if self.n <= 0 else 1
     
     def __str__(self):
         return f"{str(self.n)}  {str(self.value)}  {str(self.d)}"
     
 
 if __name__ == "__main__":
-    o1 = Sigmoid(0)
+    o1 = Sigmoid(9.483463962006056)
     print(o1)
