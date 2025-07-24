@@ -13,6 +13,10 @@ class Layer:
         length = len(self.layer_calculate)
         pass        
 
+    def differentiate(self):
+        derivative = []
+        for neuron in self.layer:
+            derivative.append(neuron.derivative)
 
 if __name__ == "__main__":
     obj = Layer(5)
