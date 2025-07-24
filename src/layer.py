@@ -3,13 +3,14 @@ import numpy as np
 
 class Layer:
 
-    def __init__(self, num):
-        self.layer = [Perceptron() for i in range(num)]
+    def __init__(self, num,input=[1,2,3,4,5]):
+        self.layer = [Perceptron(input) for _ in range(num)]
 
     def layer_calculate(self):
-        return [i.derivative for i in self.layer]
+        return [i.value for i in self.layer]
     
-    def __add__(self,other: Layer) -> Layer:
+    def __add__(self,other):
+        length = len(self.layer_calculate)
         pass        
 
 
