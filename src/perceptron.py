@@ -30,6 +30,10 @@ class  Perceptron:
     def __str__(self):
         return f"{self.w} {self.b} {self.linear_value} {self.value} {self.derivative}"
 
+    def update_weights(self, gr_w, gr_b, lr=0.01):
+        self.weight -= lr*gr_w
+        self.b -= lr*gr_b
+
 if __name__ == "__main__":
     obj = Perceptron()
     print(obj.linear_value,obj.value,obj.derivative)

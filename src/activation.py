@@ -25,7 +25,7 @@ class Sigmoid:
         return value
 
     def derivative(self):
-        return self.calculate()*(1-self.calculate())
+        return self.value*(1-self.value)
     
     def __str__(self):
         return f"{str(self.n)}  {str(self.value)}  {str(self.d)}"
