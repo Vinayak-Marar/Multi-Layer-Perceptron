@@ -6,7 +6,7 @@ class MLP:
 
 
     def __init__(self, input= [0.2,0.2,0.13,0.64,0.75],target = 1):
-        self.structure = [(2,"sigmoid"),(2,"sigmoid"),(1,"linear")]
+        self.structure = [(3,"sigmoid"),(3,"sigmoid"),(1,"linear")]
         self.network =  []
         self.input = input
         self.target = target
@@ -15,13 +15,18 @@ class MLP:
         self.value = self.forward_pass()
 
     def setting_layer(self):
-        result = self.input
+        input_dim = len(self.input)
+
         for i in range(len(self.structure)):
-            layer = Layer(num=self.structure[i][0],activation=self.structure[i][1] ,input=result)
+            layer = Layer(num=self.structure[i][0],activation=self.structure[i][1],input_dim=input_dim)
             self.network.append(layer)
+            input_dim = self.structure[i][0]
 
     def forward_pass(self):
-        return self.network[-1].layer_calculate()
+        output_value = self.input[:]
+        for layer in self.network:
+            output_value = layer.calculate(output_value)
+        return output_value
 
     def backpropogation(self):
         error = (self.target - self.value)**2

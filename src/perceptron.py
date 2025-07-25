@@ -4,26 +4,31 @@ from activation import *
 class  Perceptron:
 
 
-    def __init__(self,array=np.array([1,2,3,4,5]),activation = "sigmoid"):
-        self.input = array
-        self.w = np.random.random(len(self.input))
+    def __init__(self,input_dim,activation = "sigmoid"):
+        self.w = np.random.random(input_dim)
         self.b = np.random.random()
         self.activation = activation
-        self.linear_value = self.calculate_before_activation()
-        self.value ,self.derivative = self.activation_value()
+        self.linear_value = None
+        self.value ,self.derivative = None, None
 
-    def calculate_before_activation(self):
-        return np.dot(self.w,self.input) + self.b
+    def calculate(self,input):
+        z =self.calculate_before_activation(input)
+        a,_=self.activation_value(z)
+        print(f"a {a}")
+        return a
 
-    def activation_value(self):
+    def calculate_before_activation(self,input):
+        return np.dot(self.w,input) + self.b
+
+    def activation_value(self,input):
         if self.activation == "sigmoid":
-            activate = Sigmoid(self.linear_value)
+            activate = Sigmoid(input)
         elif self.activation == "relu":
-            activate = ReLu(self.linear_value)
+            activate = ReLu(input)
         elif self.activation == "leaky-relu":
-            activate = LeakyReLu(self.linear_value)
+            activate = LeakyReLu(input)
         elif self.activation == "linear":
-            activate = Linear(self.linear_value)
+            activate = Linear(input)
 
         return activate.calculate(), activate.derivative()
 

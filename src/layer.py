@@ -3,10 +3,8 @@ import numpy as np
 
 class Layer:
 
-    def __init__(self, num,input=[1,2,3,4,5],activation="linear"):
-        self.layer = [Perceptron(input,activation=activation) for _ in range(num)]
-        self.output = [neuron.linear_value for neuron in self.layer]
-        self.z_values = [neuron.value for neuron in self.layer]
+    def __init__(self, num,input_dim,activation="linear",):
+        self.layer = [Perceptron(input_dim=input_dim, activation=activation) for _ in range(num)]
         self.derivatives = [neuron.derivative for neuron in self.layer]
 
     def layer_calculate(self):
@@ -15,7 +13,14 @@ class Layer:
     def __add__(self,other):
         length = len(self.layer_calculate)
         pass        
-
+    
+    def calculate(self,input):
+        result = []
+        for neuron in self.layer:
+            a_value = neuron.calculate(input)
+            result.append(a_value)
+        return result
+    
     def differentiate(self):
         derivative = []
         for neuron in self.layer:
