@@ -5,7 +5,7 @@ class Layer:
 
     def __init__(self, num,input_dim,activation="linear",):
         self.layer = [Perceptron(input_dim=input_dim, activation=activation) for _ in range(num)]
-        self.derivatives = [neuron.derivative for neuron in self.layer]
+        self.derivatives = [neuron.d_value for neuron in self.layer]
 
     def layer_calculate(self):
         return [i.value for i in self.layer]
@@ -25,6 +25,22 @@ class Layer:
         derivative = []
         for neuron in self.layer:
             derivative.append(neuron.derivative)
+
+    def backward(self,deltas):
+
+        delta_prevs = np.zeros_like(self.layer[0].input)
+        grads_w = []
+        grads_b = []
+
+        for i in range(len(self.layer)):
+            dp, gw, gb = self.layer[i].backward(deltas[i])
+            delta_prevs += dp
+            grads_w.append(gw)
+            grads_b.append(gb)
+        
+        return delta_prevs, grads_w, grads_b
+
+
 
 if __name__ == "__main__":
     obj = Layer(5)

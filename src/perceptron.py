@@ -5,20 +5,22 @@ class  Perceptron:
 
 
     def __init__(self,input_dim,activation = "sigmoid"):
-        self.w = np.random.random(input_dim)
-        self.b = np.random.random()
+        self.weights = np.random.random(input_dim)
+        self.bias = 0.0
         self.activation = activation
-        self.linear_value = None
-        self.value ,self.derivative = None, None
+        self.z_value = None
+        self.a_value = None
+        self.d_value = None
+        self.input = None
 
     def calculate(self,input):
+        self.input = input
         z =self.calculate_before_activation(input)
-        a,_=self.activation_value(z)
-        print(f"a {a}")
+        a=self.activation_value(z)
         return a
 
     def calculate_before_activation(self,input):
-        return np.dot(self.w,input) + self.b
+        return np.dot(self.weights,input) + self.bias
 
     def activation_value(self,input):
         if self.activation == "sigmoid":
@@ -30,14 +32,25 @@ class  Perceptron:
         elif self.activation == "linear":
             activate = Linear(input)
 
-        return activate.calculate(), activate.derivative()
+        self.a_value= activate.calculate()
+        self.d_value = activate.derivative()
+
+        return self.a_value
+    
+    def backward(self, delta):
+        dz = delta * self.d_value
+        grad_w = dz * np.array(self.input)
+        grad_b = dz 
+        
+        delta_prev = np.array(self.weights) * dz
+        return delta_prev , grad_w, grad_b
 
     def __str__(self):
-        return f"{self.w} {self.b} {self.linear_value} {self.value} {self.derivative}"
+        return f"{self.w} {self.b} {self.z_value} {self.a_value} {self.d_value}"
 
     def update_weights(self, gr_w, gr_b, lr=0.01):
-        self.weight -= lr*gr_w
-        self.b -= lr*gr_b
+        self.weights -= (lr* np.array(gr_w))[0]
+        self.bias -= (lr* np.array(gr_b))[0]
 
 if __name__ == "__main__":
     obj = Perceptron()

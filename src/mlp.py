@@ -1,26 +1,31 @@
 from layer import Layer
 import numpy as np
+from tqdm import tqdm
 from typing import List
 
 class MLP:
 
 
-    def __init__(self, input= [0.2,0.2,0.13,0.64,0.75],target = 1):
-        self.structure = [(3,"sigmoid"),(3,"sigmoid"),(1,"linear")]
+    def __init__(self,structure = [(3,'sigmoid'), (3,'sigmoid'), (1,'linear')]):
+        self.structure = structure
         self.network =  []
-        self.input = input
-        self.target = target
+        self.input = None
+        self.target = None
 
         self.setting_layer()
-        self.value = self.forward_pass()
+        self.value = None
 
     def setting_layer(self):
-        input_dim = len(self.input)
+        input_dim = 5
 
         for i in range(len(self.structure)):
             layer = Layer(num=self.structure[i][0],activation=self.structure[i][1],input_dim=input_dim)
             self.network.append(layer)
             input_dim = self.structure[i][0]
+    
+    def fit(self,X,y):
+        self.input = X
+        self.target = y
 
     def forward_pass(self):
         output_value = self.input[:]
@@ -28,13 +33,45 @@ class MLP:
             output_value = layer.calculate(output_value)
         return output_value
 
-    def backpropogation(self):
-        error = (self.target - self.value)**2
+    def compute_error(self,y_true, y_pred):
+        error = 0.5 * (y_true - y_pred)**2
+        print(error)
+        return error
 
+    def backpropagate(self,X,y_true,lr=0.1):
+
+        y_pred = self.forward_pass()            
+        delta = y_pred - y_true 
+
+        for layer in reversed(self.network):
+            delta, gw, gb = layer.backward(delta)
+
+            for i in range(len(layer.layer)):
+                layer.layer[i].update_weights(gw,gb,lr)
+
+        return self.compute_error(y_true,y_pred)
+    
+    def fit(self,X,y):
+        self.input = X
+        self.target = y
+    
+    def train(self,epoch):
+        for i in range(epoch):
+            for j in range(self.shape[0]):
+                self.backpropagate(self.input[j],self.target[i])
+
+    def predict(self):
         pass
+
+
 
             
 
-if __name__ == "__main__":
-    mlp = MLP()
-    print(mlp.value)
+if __name__ == '__main__':
+    mlp = MLP([(5,'sigmoid'), (3,'sigmoid'), (1,'linear')])
+    X = np.random.rand(5)
+    y = np.array([1.0])
+    mlp.fit(X,y)
+    for epoch in tqdm(range(10)):
+        loss = mlp.backpropagation(X, y)
+    print("Final prediction:", mlp.forward_pass())
