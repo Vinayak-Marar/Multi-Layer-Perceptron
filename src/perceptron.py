@@ -6,6 +6,7 @@ class  Perceptron:
 
     def __init__(self,input_dim,activation = "sigmoid"):
         self.weights = np.random.random(input_dim)
+        
         self.bias = 0.0
         self.activation = activation
         self.z_value = None
@@ -15,14 +16,16 @@ class  Perceptron:
 
     def calculate(self,input):
         self.input = input
-        z =self.calculate_before_activation(input)
-        a=self.activation_value(z)
+        # print(f"input: {self.input}")
+        self.z_value =self.calculate_before_activation(input)
+        a=self.activation_value(self.z_value)
         return a
 
     def calculate_before_activation(self,input):
         return np.dot(self.weights,input) + self.bias
 
     def activation_value(self,input):
+
         if self.activation == "sigmoid":
             activate = Sigmoid(input)
         elif self.activation == "relu":
@@ -41,12 +44,12 @@ class  Perceptron:
         dz = delta * self.d_value
         grad_w = dz * np.array(self.input)
         grad_b = dz 
-        
+        # print(f"weight: {self.weights} , dz{dz} , input:{self.input}")
         delta_prev = np.array(self.weights) * dz
         return delta_prev , grad_w, grad_b
 
     def __str__(self):
-        return f"{self.w} {self.b} {self.z_value} {self.a_value} {self.d_value}"
+        return f"{self.weights} {self.bias} {self.z_value} {self.a_value} {self.d_value}"
 
     def update_weights(self, gr_w, gr_b, lr=0.01):
         self.weights -= (lr* np.array(gr_w))[0]

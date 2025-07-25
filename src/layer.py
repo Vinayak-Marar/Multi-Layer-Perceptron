@@ -7,24 +7,13 @@ class Layer:
         self.layer = [Perceptron(input_dim=input_dim, activation=activation) for _ in range(num)]
         self.derivatives = [neuron.d_value for neuron in self.layer]
 
-    def layer_calculate(self):
-        return [i.value for i in self.layer]
-    
-    def __add__(self,other):
-        length = len(self.layer_calculate)
-        pass        
-    
     def calculate(self,input):
+        # print(f"input in layer:{input}")
         result = []
         for neuron in self.layer:
             a_value = neuron.calculate(input)
             result.append(a_value)
         return result
-    
-    def differentiate(self):
-        derivative = []
-        for neuron in self.layer:
-            derivative.append(neuron.derivative)
 
     def backward(self,deltas):
 
