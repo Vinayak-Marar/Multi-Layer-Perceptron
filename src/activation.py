@@ -43,7 +43,7 @@ class ReLu:
         return 0 if self.n <= 0 else self.n
 
     def derivative(self):
-        return 0 if self.n <= 0 else 1
+        return 0.00001 if self.n <= 0 else 1
     
     def __str__(self):
         return f"{str(self.n)}  {str(self.value)}  {str(self.d)}"
